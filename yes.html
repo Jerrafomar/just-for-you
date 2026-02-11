@@ -12,9 +12,9 @@
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
 
       background-image: url("Photos/1.jpg");
-      background-size: contain;
-      background-repeat: no-repeat;   /* ✅ FIX */
-      background-position: center;    /* ✅ FIX */
+      background-size: 220px;
+      background-repeat: repeat;
+      background-position: center;
       background-attachment: fixed;
       background-color: black;
 
@@ -70,7 +70,7 @@
       width:100%;
       max-width:720px;
       height:420px;
-      object-fit:cover;
+      object-fit:contain;
       border-radius:22px;
       box-shadow: 0 14px 40px rgba(0,0,0,.35);
       transition: opacity .6s ease;
@@ -163,7 +163,7 @@
           slide.onload = () => { slide.style.opacity = "1"; };
         }, 350);
 
-      }, 5000);
+      }, 3000);
 
       // Confettis doux
       const count = 60;

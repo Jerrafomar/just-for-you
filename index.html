@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>💌 Valentine?</title>
+  <style>
+    :root{
+      --pink:#ff3b7a;
+      --bg1:#ffd6e7;
+      --bg2:#fff3c7;
+    }
+    body{
+      margin:0; min-height:100vh;
+      display:flex; align-items:center; justify-content:center;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      background: linear-gradient(135deg, var(--bg1), var(--bg2));
+      overflow:hidden;
+    }
+    .card{
+      background: rgba(255,255,255,.78);
+      backdrop-filter: blur(10px);
+      border-radius: 22px;
+      padding: 30px 26px;
+      width: min(560px, 92vw);
+      box-shadow: 0 10px 30px rgba(0,0,0,.12);
+      text-align:center;
+      position:relative;
+      z-index:2;
+    }
+    h1{ margin:0 0 10px; font-size: 30px; }
+    p{ margin:0 0 20px; opacity:.8; }
+    .btns{
+      display:flex; gap:12px;
+      justify-content:center; flex-wrap:wrap;
+      position:relative;
+      height:70px;
+    }
+    button{
+      border:0; padding: 12px 18px;
+      border-radius: 14px; font-size: 16px;
+      cursor:pointer; transition: transform .12s ease;
+      min-width:120px;
+    }
+    button:active{ transform: scale(.98); }
+    #yes{ background:var(--pink); color:white; }
+    #no{
+      background:#111; color:white;
+      position:absolute;
+      left:50%;
+      transform: translateX(70px);
+    }
+    #hint{ margin-top:12px; font-size:13px; opacity:.75; min-height:18px; }
+    .float-heart{
+      position:fixed;
+      font-size:18px;
+      opacity:.6;
+      animation: floatUp linear infinite;
+      z-index:1;
+      pointer-events:none;
+    }
+    @keyframes floatUp{
+      from{ transform: translateY(10vh); }
+      to{ transform: translateY(-120vh); }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="card">
+    <h1>Est-ce que tu veux être mon Valentine? 💖</h1>
+    <p>Promis, ça va être la plus belle réponse de ta journée 😌</p>
+
+    <div class="btns" id="arena">
+      <button id="yes">Yes 💘</button>
+      <button id="no">No 🙃</button>
+    </div>
+
+    <div id="hint"></div>
+  </div>
+
+  <script>
+    // petits coeurs en fond (simple + cute)
+    for (let i = 0; i < 18; i++) {
+      const h = document.createElement("div");
+      h.className = "float-heart";
+      h.textContent = ["💗","💖","💕","💘"][Math.floor(Math.random()*4)];
+      h.style.left = Math.random()*100 + "vw";
+      h.style.top = (Math.random()*120) + "vh";
+      h.style.animationDuration = (6 + Math.random()*10) + "s";
+      document.body.appendChild(h);
+    }
+
+    const yesBtn = document.getElementById("yes");
+    const noBtn  = document.getElementById("no");
+    const arena  = document.getElementById("arena");
+    const hint   = document.getElementById("hint");
+
+    const messages = [
+      "Heey 😳",
+      "T’es sûre? 🥺",
+      "Non non non 😭",
+      "Ok… ça suffit 😂",
+      "Allez stp 😌"
+    ];
+    let tries = 0;
+
+    yesBtn.addEventListener("click", () => {
+      window.location.href = "yes.html";
+    });
+
+    function moveNoButton(){
+      const rect = arena.getBoundingClientRect();
+
+      // limites: garder le bouton dans la zone
+      const maxX = rect.width - noBtn.offsetWidth;
+      const maxY = rect.height - noBtn.offsetHeight;
+
+      const x = Math.max(0, Math.floor(Math.random() * maxX));
+      const y = Math.max(0, Math.floor(Math.random() * maxY));
+
+      noBtn.style.left = x + "px";
+      noBtn.style.top  = y + "px";
+
+      hint.textContent = messages[Math.min(tries, messages.length - 1)];
+      tries++;
+    }
+
+    // Desktop: hover
+    noBtn.addEventListener("mouseenter", moveNoButton);
+    // Mobile: tap
+    noBtn.addEventListener("click", (e) => { e.preventDefault(); moveNoButton(); });
+
+    // position initiale correcte
+    window.addEventListener("load", moveNoButton);
+  </script>
+</body>
+</html>

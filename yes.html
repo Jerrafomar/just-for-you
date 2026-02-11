@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>💖 Nous</title>
+
+  <style>
+    body{
+      margin:0;
+      min-height:100vh;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
+
+      background-image: url("Photos/1.jpg");
+      background-size: contain;
+      background-repeat: no-repeat;   /* ✅ FIX */
+      background-position: center;    /* ✅ FIX */
+      background-attachment: fixed;
+      background-color: black;
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden;
+    }
+
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      background: rgba(255, 192, 203, 0.25);
+      backdrop-filter: blur(6px);
+      z-index:1;
+    }
+
+    .card{
+      background: rgba(255,255,255,.88);
+      border-radius: 26px;
+      padding: 28px;
+      width: min(820px, 94vw);
+      box-shadow: 0 12px 35px rgba(0,0,0,.25);
+      text-align:center;
+      position:relative;
+      z-index:2;
+      animation: fadeIn 0.8s ease;
+    }
+
+    @keyframes fadeIn{
+      from{ transform: translateY(8px); opacity:0; }
+      to{ transform:none; opacity:1; }
+    }
+
+    h1{ margin: 0 0 14px; font-size: 36px; }
+
+    .bigtext{
+      font-size: 18px;
+      line-height: 1.6;
+      opacity:.92;
+      margin: 0 auto 12px;
+      max-width: 720px;
+    }
+
+    .slider{
+      margin-top: 18px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .slider img{
+      width:100%;
+      max-width:720px;
+      height:420px;
+      object-fit:cover;
+      border-radius:22px;
+      box-shadow: 0 14px 40px rgba(0,0,0,.35);
+      transition: opacity .6s ease;
+      background: rgba(0,0,0,.25);
+      opacity: 1;
+      display: block;
+    }
+
+    .tiny{
+      margin-top:16px;
+      font-size: 14px;
+      opacity:.6;
+    }
+
+    .confetti{
+      position:fixed;
+      top:-10px;
+      width:8px;
+      height:12px;
+      border-radius:2px;
+      opacity:.9;
+      pointer-events:none;
+      z-index:1;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="card">
+    <h1>Yaaay 💖</h1>
+
+    <p class="bigtext">
+      Thank youuuu, cutie patootie!!! 😌<br/>
+      I love you sooooo much.<br/><br/>
+
+      It’s our third Valentine’s Day together, and I honestly feel so lucky and thankful that I met you.<br/>
+      This is only the beginning of our story ✨<br/><br/>
+
+      I hope you have the most beautiful day today,<br/>
+      and that you love the little surprises waiting for you 😉💘
+    </p>
+
+    <div class="slider">
+      <!-- ✅ FIX: même dossier que le JS -->
+      <img id="slide" src="Photos/2.jpg" alt="Memory" />
+    </div>
+
+    <div class="tiny">Toujours toi. Toujours nous. ❤️</div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const images = [
+        "Photos/2.jpg",
+        "Photos/3.jpg",
+        "Photos/4.jpg",
+        "Photos/5.jpg",
+        "Photos/6.jpg",
+        "Photos/7.jpg",
+        "Photos/8.jpg",
+        "Photos/9.jpg",
+        "Photos/10.jpg",
+        "Photos/11.jpg",
+        "Photos/12.jpg",
+        "Photos/13.jpg",
+        "Photos/14.jpg",
+        "Photos/15.jpg",
+        "Photos/16.jpg",
+        "Photos/17.jpg",
+        "Photos/18.jpg",
+        "Photos/19.jpg"
+      ];
+
+      const slide = document.getElementById("slide");
+      let index = 0;
+
+      // Préchargement pour éviter l'écran blanc
+      images.forEach(src => { const img = new Image(); img.src = src; });
+
+      // Assure que la première image est la bonne
+      slide.src = images[0];
+      slide.style.opacity = "1";
+
+      setInterval(() => {
+        slide.style.opacity = "0";
+
+        setTimeout(() => {
+          index = (index + 1) % images.length;
+          slide.src = images[index];
+          slide.onload = () => { slide.style.opacity = "1"; };
+        }, 350);
+
+      }, 5000);
+
+      // Confettis doux
+      const count = 60;
+      for(let i=0;i<count;i++){
+        const c = document.createElement('div');
+        c.className = 'confetti';
+        c.style.left = Math.random()*100 + 'vw';
+        c.style.background = `hsl(${Math.random()*360}, 90%, 60%)`;
+        c.style.transform = `rotate(${Math.random()*360}deg)`;
+        document.body.appendChild(c);
+
+        const dur = 2500 + Math.random()*3500;
+        const drift = (Math.random()*220 - 110);
+
+        c.animate([
+          { transform: c.style.transform, top: '-10px', opacity: 0.9 },
+          { transform: `translateX(${drift}px) rotate(${Math.random()*720}deg)`, top: '110vh', opacity: 0.15 }
+        ], { duration: dur, iterations: Infinity });
+      }
+    });
+  </script>
+</body>
+</html>
